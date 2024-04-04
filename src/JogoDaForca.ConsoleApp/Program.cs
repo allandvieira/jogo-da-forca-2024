@@ -9,7 +9,7 @@ namespace JogoDaForca.ConsoleApp
     {
         static void Main(string[] args)
         {
-            string[] palavras = { "ABACATE", "ABACAXI", "ACEROLA", "ACAI", "ARACA", "BACABA", "BACURI", "BANANA", "CAJA", "CAJU", "CARAMBOLA", "CUPUACU", "GRAVIOLA", "GOIABA", "JABUTICABA", "JENIPAPO", "MACA", "MANGABA", "MANGA", "MARACUJA", "MURICI", "PEQUI", "PITANGA", "PITAYA", "SAPOTI", "TANGERINA", "UMBU", "UVA", "UVAIA" };
+            string[] palavras = { "ABACATE", "ABACAXI", "ACEROLA", "AÇAÍ", "ARAÇA", "BACABA", "BACURI", "BANANA", "CAJÁ", "CAJÚ", "CARAMBOLA", "CUPUAÇU", "GRAVIOLA", "GOIABA", "JABUTICABA", "JENIPAPO", "MAÇÃ", "MANGABA", "MANGA", "MARACUJÁ", "MURICI", "PEQUI", "PITANGA", "PITAYA", "SAPOTI", "TANGERINA", "UMBU", "UVA", "UVAIA" };
             Random rand = new Random();
             string palavraParaAdivinhar = palavras[rand.Next(0, palavras.Length)];
             char[] palavraParaAdivinharArray = palavraParaAdivinhar.ToCharArray();
@@ -31,7 +31,7 @@ namespace JogoDaForca.ConsoleApp
                     entradaValida = true;
                     Console.Write("\nDigite uma letra: ");
                     string entrada = Console.ReadLine().ToUpper();
-                    if (entrada.Length != 1)
+                    if (entrada.Length != 1 || !Char.IsLetter(entrada[0]))
                     {
                         Console.WriteLine("\n\nPor favor, digite apenas uma letra.");
                         entradaValida = false;
@@ -42,6 +42,19 @@ namespace JogoDaForca.ConsoleApp
                     {
                         Console.WriteLine("\n\nVocê já informou essa letra. Por favor, digite outra.");
                         entradaValida = false;
+                    }
+                    // Verificar se a entrada é válida de acordo com as regras de acentuação e cedilha
+                    if (palavraParaAdivinhar.Contains(chute.ToString()))
+                    {
+                        for (int i = 0; i < palavraParaAdivinhar.Length; i++)
+                        {
+                            if (palavraParaAdivinharArray[i] == chute && palavraParaExibir[i] != '_')
+                            {
+                                Console.WriteLine("\n\nVocê já informou essa letra. Por favor, digite outra.");
+                                entradaValida = false;
+                                break;
+                            }
+                        }
                     }
                 } while (!entradaValida);
                 letrasInformadas.Add(chute);
