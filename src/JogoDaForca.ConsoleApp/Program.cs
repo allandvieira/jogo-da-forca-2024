@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
 
 namespace JogoDaForca.ConsoleApp
 {
@@ -7,7 +9,7 @@ namespace JogoDaForca.ConsoleApp
     {
         static void Main(string[] args)
         {
-            string[] palavras = { "ABACATE", "ABACAXI", "ACEROLA", "AÇAÍ", "ARAÇA", "BACABA", "BACURI", "BANANA", "CAJÁ", "CAJÚ", "CARAMBOLA", "CUPUAÇU", "GRAVIOLA", "GOIABA", "JABUTICABA", "JENIPAPO", "MAÇÃ", "MANGABA", "MANGA", "MARACUJÁ", "MURICI", "PEQUI", "PITANGA", "PITAYA", "SAPOTI", "TANGERINA", "UMBU", "UVA", "UVAIA" };
+            string[] palavras = { "ABACATE", "ABACAXI", "ACEROLA", "ACAI", "ARACA", "BACABA", "BACURI", "BANANA", "CAJA", "CAJU", "CARAMBOLA", "CUPUACU", "GRAVIOLA", "GOIABA", "JABUTICABA", "JENIPAPO", "MACA", "MANGABA", "MANGA", "MARACUJA", "MURICI", "PEQUI", "PITANGA", "PITAYA", "SAPOTI", "TANGERINA", "UMBU", "UVA", "UVAIA" };
             Random rand = new Random();
             string palavraParaAdivinhar = palavras[rand.Next(0, palavras.Length)];
             char[] palavraParaAdivinharArray = palavraParaAdivinhar.ToCharArray();
@@ -22,16 +24,26 @@ namespace JogoDaForca.ConsoleApp
                 Console.WriteLine(mensagem);
                 DesenharForca(erros);
                 Console.WriteLine("\n" + new string(palavraParaExibir));
-                char chute;
+                char chute = ' '; // inicializando a variável chute
+                bool entradaValida;
                 do
                 {
+                    entradaValida = true;
                     Console.Write("\nDigite uma letra: ");
-                    chute = Char.ToUpper(Console.ReadKey().KeyChar);
+                    string entrada = Console.ReadLine().ToUpper();
+                    if (entrada.Length != 1)
+                    {
+                        Console.WriteLine("\n\nPor favor, digite apenas uma letra.");
+                        entradaValida = false;
+                        continue;
+                    }
+                    chute = entrada[0];
                     if (letrasInformadas.Contains(chute))
                     {
                         Console.WriteLine("\n\nVocê já informou essa letra. Por favor, digite outra.");
+                        entradaValida = false;
                     }
-                } while (letrasInformadas.Contains(chute));
+                } while (!entradaValida);
                 letrasInformadas.Add(chute);
 
                 if (palavraParaAdivinhar.Contains(chute.ToString()))
